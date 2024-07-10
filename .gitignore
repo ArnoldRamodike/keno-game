@@ -1,10 +1,8 @@
 .env
-*KenoGame.API.pdb
-*KenoGame.API.dll
-KenoGame.API.dll/bin
-KenoGame.API.dll/obj
-bin/
-obj/
+/bin
+/obj
+KenoGame.API/bin/
+KenoGame.API/obj/
 
 # Ignore other common files and directories
 *.log
