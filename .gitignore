@@ -1,0 +1,19 @@
+.env
+*KenoGame.API.pdb
+*KenoGame.API.dll
+KenoGame.API.dll/bin
+KenoGame.API.dll/obj
+bin/
+obj/
+
+# Ignore other common files and directories
+*.log
+*.user
+*.suo
+*.bak
+*.cache
+*.tmp
+*.pdb
+*.mdb
+.vscode/
+.DS_Store
