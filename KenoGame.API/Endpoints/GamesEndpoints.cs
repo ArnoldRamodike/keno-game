@@ -30,7 +30,8 @@ public static class GamesEndpoints
     const string GetGameEndpointName = "GetGame";
     public static RouteGroupBuilder MapGaesEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("games");
+        var group = app.MapGroup("games")
+            .WithParameterValidation();
 
         // Get Games
         group.MapGet("/", () => games);
@@ -47,6 +48,7 @@ public static class GamesEndpoints
         // Get Games
         group.MapPost("/", (CreateGameDto newGame) =>
         {
+
             GameDto game = new(
                 games.Count + 1,
                 newGame.Name,
@@ -59,6 +61,7 @@ public static class GamesEndpoints
 
             return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, game);
         });
+
 
         // Put Games
         group.MapPut("/{id}", (int id, UpdateGameDto updateGame) =>
