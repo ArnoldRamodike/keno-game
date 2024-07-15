@@ -1,8 +1,12 @@
 .env
 /bin
 /obj
-KenoGame.API/bin/
-KenoGame.API/obj/
+KenoGame.API/bin
+KenoGame.API/obj
+KenoGame.API/GameStore.db
+KenoGame.API/GameStore.db-shm
+KenoGame.API/GameStore.db-wal
+KenoGame.API/Data/Migrations
 
 # Ignore other common files and directories
 *.log
