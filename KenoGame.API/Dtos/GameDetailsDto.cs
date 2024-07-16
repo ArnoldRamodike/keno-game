@@ -1,9 +1,9 @@
 ﻿namespace KenoGame.API.Dtos;
 
-public record class GameDto(
+public record class GameDetailsDto(
     int Id,
     string Name,
-    string Genre,
+    int GenreId,
     Decimal Price,
     DateOnly ReleaseDate
     );

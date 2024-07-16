@@ -1,12 +1,14 @@
 ﻿using KenoGame.API.Data;
 using KenoGame.API.Dtos;
 using KenoGame.API.Entities;
+using KenoGame.API.Mapping;
+using Microsoft.EntityFrameworkCore;
 
 namespace KenoGame.API;
 
 public static class GamesEndpoints
 {
-    private static readonly List<GameDto> games = [
+    private static readonly List<GameSummryDto> games = [
      new (
         1,
         "Street Fighting II",
@@ -36,14 +38,19 @@ public static class GamesEndpoints
             .WithParameterValidation();
 
         // Get Games
-        group.MapGet("/", () => games);
+        group.MapGet("/", (GamesStoreContext dbContext) =>
+          dbContext.Games
+                .Include(game => game.Genre)
+                .Select(game => game.ToGameSummuryDto())
+                .AsNoTracking()
+        );
 
         // Get Game/id
-        group.MapGet("/{id}", (int id) =>
+        group.MapGet("/{id}", (int id, GamesStoreContext dbContext) =>
         {
-            GameDto? game = games.Find(game => game.Id == id);
+            Game? game = dbContext.Games.Find(id);
 
-            return game is null ? Results.NotFound() : Results.Ok(game);
+            return game is null ? Results.NotFound() : Results.Ok(game.ToGameDetailsDto());
         })
             .WithName(GetGameEndpointName);
 
@@ -51,57 +58,41 @@ public static class GamesEndpoints
         group.MapPost("/", (CreateGameDto newGame, GamesStoreContext dbContext) =>
         {
 
-            Game game = new()
-            {
-                Name = newGame.Name,
-                Genre = dbContext.Genre.Find(newGame.GenreId),
-                GenreId = newGame.GenreId,
-                Price = newGame.Price,
-                ReleaseDate = newGame.ReleaseDate
-            };
+            Game game = newGame.ToEntity();
 
             dbContext.Games.Add(game);
             dbContext.SaveChanges();
 
-            GameDto gameDto = new(
-                game.Id,
-                game.Name,
-                game.Genre!.Name,
-                game.Price,
-                game.ReleaseDate
-            );
 
-
-            return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, gameDto);
+            return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, game.ToGameDetailsDto());
         });
 
 
         // Put Games
-        group.MapPut("/{id}", (int id, UpdateGameDto updateGame) =>
+        group.MapPut("/{id}", (int id, UpdateGameDto updateGame, GamesStoreContext dbContext) =>
         {
-            var index = games.FindIndex(game => game.Id == id);
+            var existingGame = dbContext.Games.Find(id);
 
-            if (index == -1)
+            if (existingGame is null)
             {
                 return Results.NotFound();
             }
 
-            games[index] = new GameDto(
-                id,
-                updateGame.Name,
-                updateGame.Genre,
-                updateGame.Price,
-                updateGame.ReleaseDate
-            );
+            dbContext.Entry(existingGame)
+                    .CurrentValues
+                    .SetValues(updateGame.ToGameUpdateDto(id));
+
+            dbContext.SaveChanges();
 
             return Results.NoContent();
         });
 
-        // Get Games
-        group.MapDelete("/{id}", (int id) =>
+        // Delete Game
+        group.MapDelete("/{id}", (GamesStoreContext dbContext, int id) =>
         {
-
-            games.RemoveAll(game => game.Id == id);
+            dbContext.Games
+                        .Where(game => game.Id == id)
+                        .ExecuteDelete();
 
             return Results.NoContent();
         });
