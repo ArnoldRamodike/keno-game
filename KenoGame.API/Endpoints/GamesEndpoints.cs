@@ -1,4 +1,6 @@
-﻿using KenoGame.API.Dtos;
+﻿using KenoGame.API.Data;
+using KenoGame.API.Dtos;
+using KenoGame.API.Entities;
 
 namespace KenoGame.API;
 
@@ -28,7 +30,7 @@ public static class GamesEndpoints
         )
   ];
     const string GetGameEndpointName = "GetGame";
-    public static RouteGroupBuilder MapGaesEndpoints(this WebApplication app)
+    public static RouteGroupBuilder MapGamesEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("games")
             .WithParameterValidation();
@@ -46,20 +48,31 @@ public static class GamesEndpoints
             .WithName(GetGameEndpointName);
 
         // Get Games
-        group.MapPost("/", (CreateGameDto newGame) =>
+        group.MapPost("/", (CreateGameDto newGame, GamesStoreContext dbContext) =>
         {
 
-            GameDto game = new(
-                games.Count + 1,
-                newGame.Name,
-                newGame.Genre,
-                newGame.Price,
-                newGame.ReleaseDate
+            Game game = new()
+            {
+                Name = newGame.Name,
+                Genre = dbContext.Genre.Find(newGame.GenreId),
+                GenreId = newGame.GenreId,
+                Price = newGame.Price,
+                ReleaseDate = newGame.ReleaseDate
+            };
+
+            dbContext.Games.Add(game);
+            dbContext.SaveChanges();
+
+            GameDto gameDto = new(
+                game.Id,
+                game.Name,
+                game.Genre!.Name,
+                game.Price,
+                game.ReleaseDate
             );
 
-            games.Add(game);
 
-            return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, game);
+            return Results.CreatedAtRoute(GetGameEndpointName, new { id = game.Id }, gameDto);
         });
 
 

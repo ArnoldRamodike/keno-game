@@ -3,6 +3,7 @@
 /obj
 KenoGame.API/bin
 KenoGame.API/obj
+KenoGame.API/obj/debug
 KenoGame.API/GameStore.db
 KenoGame.API/GameStore.db-shm
 KenoGame.API/GameStore.db-wal
@@ -23,11 +24,3 @@ appsettings.json
 .DS_Store
 
 # bin debug files
-KenoGame.API/bin/Debug/net7.0/KenoGame.API.pdb
-KenoGame.API/bin/Debug/net7.0/KenoGame.API.pdb
-KenoGame.API/obj/Debug/net7.0/KenoGame.API.csproj.CoreCompileInputs.cache
-KenoGame.API/obj/Debug/net7.0/KenoGame.API.dll
-KenoGame.API/obj/Debug/net7.0/refint/KenoGame.API.dll
-KenoGame.API/obj/Debug/net7.0/ref/KenoGame.API.dll
-KenoGame.API/bin/Debug/net7.0/KenoGame.API.dll
-KenoGame.API/obj/Debug/net7.0/KenoGame.API.csproj.CoreCompileInputs.cache
