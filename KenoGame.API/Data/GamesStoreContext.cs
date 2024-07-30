@@ -8,6 +8,7 @@ namespace KenoGame.API.Data
     {
         public DbSet<Game> Games => Set<Game>();
         public DbSet<Genre> Genre => Set<Genre>();
+        public DbSet<User> Users => Set<User>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
