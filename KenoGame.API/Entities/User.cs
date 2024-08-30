@@ -8,9 +8,12 @@ namespace KenoGame.API.Entities
     public class User
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string FullName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public int Numbers { get; set; }
+        public int PhoneNumbers { get; set; }
+        public string? Role { get; set; }
+        public DateTime CreatedAt { get; set; }
+
     }
 }

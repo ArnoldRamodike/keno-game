@@ -8,6 +8,8 @@ namespace KenoGame.API.Data
     {
         public DbSet<Game> Games => Set<Game>();
         public DbSet<Genre> Genre => Set<Genre>();
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Role> Roles => Set<Role>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,6 +20,12 @@ namespace KenoGame.API.Data
                 new { Id = 4, Name = "Racing" },
                 new { Id = 5, Name = "Kids" }
             );
+
+            modelBuilder.Entity<Role>().HasData(
+                new { Id = 1, Roles = "USER" },
+                new { Id = 2, Roles = "OWNER" },
+                new { Id = 3, Roles = "ADMIN" }
+                );
         }
     }
 }
