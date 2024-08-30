@@ -8,29 +8,6 @@ namespace KenoGame.API;
 
 public static class GamesEndpoints
 {
-    private static readonly List<GameSummryDto> games = [
-     new (
-        1,
-        "Street Fighting II",
-        "Fighting",
-        19.99M,
-        new DateOnly(1992, 7, 15)
-        ),
-    new (
-        2,
-        "Need for Speed",
-        "Racing",
-        13.99M,
-        new DateOnly(2005, 7, 15)
-        ),
-    new (
-        3,
-        "FIFA",
-        "Football",
-        30.99M,
-        new DateOnly(2023, 8, 15)
-        )
-  ];
     const string GetGameEndpointName = "GetGame";
     public static RouteGroupBuilder MapGamesEndpoints(this WebApplication app)
     {
