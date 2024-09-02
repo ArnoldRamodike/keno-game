@@ -9,67 +9,67 @@ namespace KenoGame.API;
 public static class UsersEndpoints
 {
     const string GetUserEndpointName = "GetUser";
-    public static RouteGroupBuilder MapGamesEndpoints(this WebApplication app)
+    public static RouteGroupBuilder MapUsersEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("users")
             .WithParameterValidation();
 
-        // Get Games
+        // Get Users
         group.MapGet("/", async (GamesStoreContext dbContext) =>
-         await dbContext.Games
-                .Include(game => game.Genre)
-                .Select(game => game.ToGameSummuryDto())
+         await dbContext.Users
+                // .Include(User => User.Role)
+                .Select(user => user.ToUserSummuryDto())
                 .AsNoTracking()
                 .ToListAsync()
         );
 
-        // Get Game/id
+        // Get User/id
         group.MapGet("/{id}", async (int id, GamesStoreContext dbContext) =>
         {
-            Game? game = await dbContext.Games.FindAsync(id);
+            User? user = await dbContext.Users.FindAsync(id);
 
-            return game is null ? Results.NotFound() : Results.Ok(game.ToGameDetailsDto());
+            return user is null ? Results.NotFound() : Results.Ok(user.ToUserDetailsDto());
         })
             .WithName(GetUserEndpointName);
 
         // Get Games
-        group.MapPost("/register", async (CreateGameDto newGame, GamesStoreContext dbContext) =>
+        group.MapPost("/", async (CreateUserDto newUser, GamesStoreContext dbContext) =>
         {
 
-            Game game = newGame.ToEntity();
+            User user = newUser.ToEntity();
 
-            await dbContext.Games.AddAsync(game);
+            await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
 
 
-            return Results.CreatedAtRoute(GetUserEndpointName, new { id = game.Id }, game.ToGameDetailsDto());
+            return Results.CreatedAtRoute(GetUserEndpointName, new { id = user.Id }, user.ToUserDetailsDto());
         });
 
 
-        // Put Games
-        group.MapPut("/{id}", async (int id, UpdateGameDto updateGame, GamesStoreContext dbContext) =>
+        // Put User
+        group.MapPut("/{id}", async (int id, UpdateUserDto updateUser, GamesStoreContext dbContext) =>
         {
-            var existingGame = await dbContext.Games.FindAsync(id);
+            var existingUser = await dbContext.Users.FindAsync(id);
 
-            if (existingGame is null)
+            if (existingUser is null)
             {
                 return Results.NotFound();
             }
 
-            dbContext.Entry(existingGame)
+            dbContext.Entry(existingUser)
                     .CurrentValues
-                    .SetValues(updateGame.ToGameUpdateDto(id));
+                    .SetValues(updateUser.ToUserUpdateDto(id));
 
             await dbContext.SaveChangesAsync();
 
             return Results.NoContent();
         });
 
-        // Delete Game
+        // Delete User
         group.MapDelete("/{id}", async (GamesStoreContext dbContext, int id) =>
         {
-            await dbContext.Games
-                          .Where(game => game.Id == id)
+            await dbContext.Users
+                          .Where(user => user.Id == id)
                           .ExecuteDeleteAsync();
 
             return Results.NoContent();

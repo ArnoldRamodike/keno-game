@@ -18,6 +18,7 @@ builder.Services.AddDataProtection();
 var app = builder.Build();
 
 app.MapGamesEndpoints();
+app.MapUsersEndpoints();
 app.MapGenresEndpoints();
 app.MapGet("/username", (HttpContext ctx, IDataProtectionProvider idp) =>
 {

@@ -13,7 +13,7 @@ namespace KenoGame.API.Entities
         public string Password { get; set; }
         public int PhoneNumbers { get; set; }
         public string? Role { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateOnly CreatedAt { get; set; }
 
     }
 }
