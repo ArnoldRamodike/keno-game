@@ -1,3 +1,4 @@
+using BCrypt.Net;
 using KenoGame.API.Data;
 using KenoGame.API.Dtos;
 using KenoGame.API.Entities;
@@ -9,7 +10,7 @@ namespace KenoGame.API;
 public static class UsersEndpoints
 {
     const string GetUserEndpointName = "GetUser";
-    public static RouteGroupBuilder MapUsersEndpoints(this WebApplication app)
+    public static RouteGroupBuilder MapUsersEndpoints(this WebApplication app, JwtService jwtService)
     {
         var group = app.MapGroup("users")
             .WithParameterValidation();
@@ -32,17 +33,34 @@ public static class UsersEndpoints
         })
             .WithName(GetUserEndpointName);
 
-        // Get Games
-        group.MapPost("/", async (CreateUserDto newUser, GamesStoreContext dbContext) =>
+        // Register
+        group.MapPost("/register", async (CreateUserDto newUser, GamesStoreContext dbContext) =>
         {
 
             User user = newUser.ToEntity();
+            user.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
 
             await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
 
 
             return Results.CreatedAtRoute(GetUserEndpointName, new { id = user.Id }, user.ToUserDetailsDto());
+        });
+        // User Login
+        group.MapPost("/login", async (LoginUserDto loginUser, GamesStoreContext dbContext) =>
+        {
+
+            var user = await dbContext.Users
+            .FirstOrDefaultAsync(u => u.Email == loginUser.Email);
+
+            if (user is null || !BCrypt.Net.BCrypt.Verify(loginUser.Password, user.Password))
+            {
+                return Results.Unauthorized();
+            }
+
+            var token = jwtService.GenerateToken(user.Id);
+
+            return Results.Ok(new { Token = token });
         });
 
 
