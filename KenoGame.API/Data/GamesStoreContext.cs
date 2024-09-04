@@ -25,7 +25,11 @@ namespace KenoGame.API.Data
                 new { Id = 1, Roles = "USER" },
                 new { Id = 2, Roles = "OWNER" },
                 new { Id = 3, Roles = "ADMIN" }
-                );
+            );
+
+            modelBuilder.Entity<User>()
+                .HasIndex(x => x.Email)
+                .IsUnique();
         }
     }
 }

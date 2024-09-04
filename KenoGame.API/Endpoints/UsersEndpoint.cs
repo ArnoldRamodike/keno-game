@@ -38,6 +38,11 @@ public static class UsersEndpoints
         group.MapPost("/register", async (CreateUserDto newUser, GamesStoreContext dbContext) =>
         {
 
+            if (await dbContext.Users.AnyAsync(u => u.Email == newUser.Email))
+            {
+                return Results.BadRequest(new { error = "Invalid Email", Message = "Email already exists, please login" });
+            }
+
             User user = newUser.ToEntity();
             user.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
 
