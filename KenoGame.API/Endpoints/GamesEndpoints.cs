@@ -12,7 +12,8 @@ public static class GamesEndpoints
     public static RouteGroupBuilder MapGamesEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("games")
-            .WithParameterValidation();
+            .WithParameterValidation()
+            .RequireAuthorization();
 
         // Get Games
         group.MapGet("/", async (GamesStoreContext dbContext) =>

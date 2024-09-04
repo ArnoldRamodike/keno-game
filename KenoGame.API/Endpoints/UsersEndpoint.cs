@@ -22,7 +22,7 @@ public static class UsersEndpoints
                 .Select(user => user.ToUserSummuryDto())
                 .AsNoTracking()
                 .ToListAsync()
-        );
+        ).RequireAuthorization();
 
         // Get User/id
         group.MapGet("/{id}", async (int id, GamesStoreContext dbContext) =>
@@ -31,7 +31,8 @@ public static class UsersEndpoints
 
             return user is null ? Results.NotFound() : Results.Ok(user.ToUserDetailsDto());
         })
-            .WithName(GetUserEndpointName);
+            .WithName(GetUserEndpointName)
+            .RequireAuthorization();
 
         // Register
         group.MapPost("/register", async (CreateUserDto newUser, GamesStoreContext dbContext) =>
@@ -81,7 +82,7 @@ public static class UsersEndpoints
             await dbContext.SaveChangesAsync();
 
             return Results.NoContent();
-        });
+        }).RequireAuthorization();
 
         // Delete User
         group.MapDelete("/{id}", async (GamesStoreContext dbContext, int id) =>
@@ -91,7 +92,7 @@ public static class UsersEndpoints
                           .ExecuteDeleteAsync();
 
             return Results.NoContent();
-        });
+        }).RequireAuthorization();
 
         return group;
     }
