@@ -6,7 +6,8 @@ public record class UpdateUserDto(
     [Required][StringLength(50)] string FullName,
     [Required][StringLength(50)] string Email,
     [Required][StringLength(50)] string Password,
-    int PhoneNumbers,
-    string? Role,
+    decimal PhoneNumbers,
+    int RoleId,
+    Boolean? IsVerified,
     DateOnly CreatedAt
 );

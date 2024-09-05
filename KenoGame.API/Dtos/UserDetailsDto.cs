@@ -1,11 +1,12 @@
 ﻿namespace KenoGame.API.Dtos;
 
 public record class UserDetailsDto(
-    int Id,
+    string Id,
     string FullName,
     string Email,
     string Password,
-    int PhoneNumbers,
-    string Role,
+    decimal PhoneNumbers,
+    int RoleId,
+    Boolean? IsVerified,
     DateOnly CreatedAt
     );

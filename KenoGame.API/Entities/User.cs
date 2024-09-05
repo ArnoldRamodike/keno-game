@@ -8,14 +8,15 @@ namespace KenoGame.API.Entities
 {
     public class User
     {
-        public int Id { get; set; }
-        public string FullName { get; set; }
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public int PhoneNumbers { get; set; }
-        public string? Role { get; set; }
+        [Key]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public required string FullName { get; set; }
+
+        public required string Email { get; set; }
+        public required string Password { get; set; }
+        public decimal PhoneNumbers { get; set; }
+        public int RoleId { get; set; }
+        public Role? Roles { get; set; }
         public Boolean? IsVerified { get; set; }
         public DateOnly CreatedAt { get; set; }
 
