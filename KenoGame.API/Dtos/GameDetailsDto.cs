@@ -5,5 +5,6 @@ public record class GameDetailsDto(
     string Name,
     int GenreId,
     Decimal Price,
+    string UserId,
     DateOnly ReleaseDate
     );

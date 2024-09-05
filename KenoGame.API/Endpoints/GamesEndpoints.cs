@@ -19,6 +19,7 @@ public static class GamesEndpoints
         group.MapGet("/", async (GamesStoreContext dbContext) =>
          await dbContext.Games
                 .Include(game => game.Genre)
+                .Include(user => user.User)
                 .Select(game => game.ToGameSummuryDto())
                 .AsNoTracking()
                 .ToListAsync()

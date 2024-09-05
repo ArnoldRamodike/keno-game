@@ -11,6 +11,9 @@ namespace KenoGame.API.Entities
         public Genre? Genre { get; set; }
 
         public decimal Price { get; set; }
+        public required string UserId { get; set; }
+
+        public User? User { get; set; }
 
         public DateOnly ReleaseDate { get; set; }
     }
