@@ -13,7 +13,8 @@ namespace KenoGame.API.Mapping
                 Email = user.Email,
                 Password = user.Password,
                 PhoneNumbers = user.PhoneNumbers,
-                Role = user.Role,
+                RoleId = user.RoleId,
+                IsVerified = user.IsVerified,
                 CreatedAt = user.CreatedAt
             };
         }
@@ -27,7 +28,8 @@ namespace KenoGame.API.Mapping
                    user.Email,
                    user.Password,
                    user.PhoneNumbers,
-                   user.Role,
+                   user.Roles.ToString(),
+                   user.IsVerified,
                    user.CreatedAt
                );
         }
@@ -39,11 +41,12 @@ namespace KenoGame.API.Mapping
                    user.Email,
                    user.Password,
                    user.PhoneNumbers,
-                   user.Role,
+                   user.RoleId,
+                   user.IsVerified,
                    user.CreatedAt
                );
         }
-        public static User ToUserUpdateDto(this UpdateUserDto user, int id)
+        public static User ToUserUpdateDto(this UpdateUserDto user, string id)
         {
             return new User()
             {
@@ -52,7 +55,8 @@ namespace KenoGame.API.Mapping
                 Password = user.Password,
                 Email = user.Email,
                 PhoneNumbers = user.PhoneNumbers,
-                Role = user.Role,
+                RoleId = user.RoleId,
+                IsVerified = user.IsVerified,
                 CreatedAt = user.CreatedAt
             };
         }

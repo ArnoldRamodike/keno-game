@@ -15,7 +15,7 @@ public class JwtService
         _configuration = configuration;
     }
 
-    public string GenerateToken(int userId)
+    public string GenerateToken(string userId)
     {
         var claims = new[]
         {

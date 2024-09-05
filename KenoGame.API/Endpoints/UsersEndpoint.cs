@@ -71,7 +71,7 @@ public static class UsersEndpoints
 
 
         // Put User
-        group.MapPut("/{id}", async (int id, UpdateUserDto updateUser, GamesStoreContext dbContext) =>
+        group.MapPut("/{id}", async (string id, UpdateUserDto updateUser, GamesStoreContext dbContext) =>
         {
             var existingUser = await dbContext.Users.FindAsync(id);
 
@@ -90,7 +90,7 @@ public static class UsersEndpoints
         }).RequireAuthorization();
 
         // Delete User
-        group.MapDelete("/{id}", async (GamesStoreContext dbContext, int id) =>
+        group.MapDelete("/{id}", async (GamesStoreContext dbContext, string id) =>
         {
             await dbContext.Users
                           .Where(user => user.Id == id)

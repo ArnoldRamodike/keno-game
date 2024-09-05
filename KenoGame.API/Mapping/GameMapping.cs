@@ -12,6 +12,7 @@ namespace KenoGame.API.Mapping
                 Name = game.Name,
                 GenreId = game.GenreId,
                 Price = game.Price,
+                UserId = game.UserId,
                 ReleaseDate = game.ReleaseDate
             };
         }
@@ -24,6 +25,7 @@ namespace KenoGame.API.Mapping
                    game.Name,
                    game.Genre!.Name,
                    game.Price,
+                   game.User.FullName,
                    game.ReleaseDate
                );
         }
@@ -34,6 +36,7 @@ namespace KenoGame.API.Mapping
                    game.Name,
                    game.GenreId,
                    game.Price,
+                   game.UserId,
                    game.ReleaseDate
                );
         }
@@ -45,6 +48,7 @@ namespace KenoGame.API.Mapping
                 Name = game.Name,
                 GenreId = game.GenreId,
                 Price = game.Price,
+                UserId = game.UserId,
                 ReleaseDate = game.ReleaseDate
             };
         }
